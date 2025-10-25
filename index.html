@@ -12,7 +12,7 @@
 
 <meta name="author" content="Aki Shiroshita" />
 
-<meta name="date" content="2025-10-16" />
+<meta name="date" content="2025-10-25" />
 
 <title>Modified DeGAUSS</title>
 
@@ -59,7 +59,7 @@ code span.ot { color: #007020; }
 <section class="page-header">
 <h1 class="title toc-ignore project-name">Modified DeGAUSS</h1>
 <h4 class="author project-author">Aki Shiroshita</h4>
-<h4 class="date project-date">2025-10-16</h4>
+<h4 class="date project-date">2025-10-25</h4>
 </section>
 
 
@@ -91,9 +91,11 @@ folder.</p></li>
 <h3>Improvements in the Modified DeGAUSS</h3>
 <ul>
 <li><p>Avoid reliance on Docker, using Podman only for part of the
-process.</p></li>
+process. (VUMC moved from Docker to Podman in October 2025)</p></li>
 <li><p>Utilize C and C++ in the backend wherever possible.</p></li>
-<li><p>Enable parallel processing with multiple cores.</p></li>
+<li><p>Enable parallel processing with multiple cores. (Windows OS and
+Podman setups don’t support FIFOs used by internally in the original
+DeGAUSS for parallel geocoding)</p></li>
 <li><p>Restrict environmental data to Tennessee only, not the entire
 U.S.</p></li>
 </ul>
@@ -332,7 +334,7 @@ from major roads).</p></li>
 </ol>
 <ul>
 <li>Podman can be a bit tricky to use. Even if Podman is available on
-the same server environment, you’ll need to install it independently on
+the same server environment, you’ll need to set it up independently on
 your system.</li>
 </ul>
 <p>Instruction (<a href="https://github.com/containers/podman/blob/main/docs/tutorials/podman-for-windows.md/" class="uri">https://github.com/containers/podman/blob/main/docs/tutorials/podman-for-windows.md/</a>)</p>
@@ -348,6 +350,13 @@ start Podman</p></li>
 <li>Check the status and start the Podman machine</li>
 </ul>
 <pre><code>podman machine start</code></pre>
+<ul>
+<li>Prepare the necessary Docker containers so that we avoid pulling
+Docker image from the public repository every time we run the
+command.</li>
+</ul>
+<pre><code>podman run -it -d --name gs --entrypoint /bin/bash ghcr.io/degauss-org/postal:0.1.4
+podman run -it -d --name gs2 --entrypoint /bin/bash degauss/geocoder:3.0</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Navigate to the Folder:</li>
 </ol>
