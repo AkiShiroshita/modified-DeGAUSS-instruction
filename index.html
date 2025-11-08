@@ -154,14 +154,14 @@ removed.</p>
 <td align="left"></td>
 <td align="left"><code>length_1100</code></td>
 <td align="left">U.S. Census Bureau</td>
-<td align="left">length (meters) of S1100 roads within a 400 m
+<td align="left">length (meters) of S1100 roads within a 500 m
 buffer</td>
 </tr>
 <tr class="odd">
 <td align="left"></td>
 <td align="left"><code>length_1200</code></td>
 <td align="left">U.S. Census Bureau</td>
-<td align="left">length (meters) of S1200 roads within a 400 m
+<td align="left">length (meters) of S1200 roads within a 500 m
 buffer</td>
 </tr>
 <tr class="even">
@@ -641,7 +641,7 @@ and secondary roads (separately).</p>
 data source is <a href="https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html">U.S.
 Census Bureau TIGER/Line Files</a>.</p>
 <p>I chose the 2011 data because it is the earliest year for which
-primary and secondary road shapefiles are available.</p>
+primary and secondary road shapefiles are available through R <a href="https://github.com/walkerke/tigris">tigris</a> package.</p>
 <ol start="7" style="list-style-type: decimal">
 <li><code>R/green.R</code></li>
 </ol>
@@ -711,12 +711,13 @@ proximity to major roads and the traffic volume along those roads.</p>
 <li><code>R/road_density.R</code></li>
 </ol>
 <p>This script calculates the length (meters) of primary and secondary
-roads (separately).</p>
+roads (separately) within a 500 m buffer radius of each residential
+address.</p>
 <p>Road data are from TIGER 2011, accessed via the R tigris package. The
 data source is <a href="https://www.census.gov/geographies/mapping-files/time-series/geo/tiger-line-file.html">U.S.
 Census Bureau TIGER/Line Files</a>.</p>
 <p>I chose the 2011 data because it is the earliest year for which
-primary and secondary road shapefiles are available.</p>
+primary and secondary road shapefiles are available through R <a href="https://github.com/walkerke/tigris">tigris</a> package.</p>
 <ol start="11" style="list-style-type: decimal">
 <li><code>R/no2_monthly.R</code></li>
 </ol>
