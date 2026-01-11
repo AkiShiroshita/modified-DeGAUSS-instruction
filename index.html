@@ -12,7 +12,7 @@
 
 <meta name="author" content="Aki Shiroshita" />
 
-<meta name="date" content="2025-11-21" />
+<meta name="date" content="2026-01-11" />
 
 <title>Modified DeGAUSS</title>
 
@@ -59,7 +59,7 @@ code span.ot { color: #007020; }
 <section class="page-header">
 <h1 class="title toc-ignore project-name">Modified DeGAUSS</h1>
 <h4 class="author project-author">Aki Shiroshita</h4>
-<h4 class="date project-date">2025-11-21</h4>
+<h4 class="date project-date">2026-01-11</h4>
 </section>
 
 
@@ -330,102 +330,10 @@ children are masked as “&lt;11”).</p></li>
 NDI NSES, SDI, and EQI, etc.</p></li>
 </ul>
 </div>
-<div id="how-to-use-modified-degauss" class="section level3">
-<h3>How to Use Modified DeGAUSS</h3>
-<p><strong>Step-by-Step Instructions</strong></p>
+<div id="brief-description-of-what-modified-degauss-is-doing." class="section level3">
+<h3>Brief description of what Modified DeGAUSS is doing.</h3>
 <ol style="list-style-type: decimal">
-<li>Install Podman:</li>
-</ol>
-<ul>
-<li><p><a href="https://github.com/containers/podman/blob/main/docs/tutorials/podman-for-windows.md">Podman</a>
-can be a bit tricky to use. Even if Podman is available on the same
-server environment, you’ll need to set it up independently on your
-system.</p></li>
-<li><p>Install Podman: As of October 29, 2025, the latest version is
-podman-installer-windows-amd64.exe
-(sha256:5e97bd3a56eba7302c94a2b11a8a639f513830c228d27f9cda7e557a77bd4379)</p></li>
-<li><p>After installation, run the following commands to initialize and
-start Podman</p></li>
-</ul>
-<pre><code>podman machine init</code></pre>
-<ul>
-<li>Check the status and start the Podman machine</li>
-</ul>
-<pre><code>podman machine start</code></pre>
-<ul>
-<li>Prepare the necessary containers so that we avoid pulling Docker
-image from the public repository every time we run the command.</li>
-</ul>
-<pre><code>podman run -it -d --name gs --entrypoint /bin/bash ghcr.io/degauss-org/postal:0.1.4
-podman run -it -d --name gs2 --entrypoint /bin/bash degauss/geocoder:3.0</code></pre>
-<ol start="2" style="list-style-type: decimal">
-<li>Navigate to the Folder:</li>
-</ol>
-<ul>
-<li>Map your shared drive containing address information to our Windows
-server</li>
-</ul>
-<p>Note: Your data will remain on the shared drive and will never leave
-the VUMC environment.The server will load data into memory for
-processing, but data will not be stored in local server folders. Any
-temporary cache generated during processing will be removed.</p>
-<ul>
-<li>Navigate to the folder “modified_degauss” on the Windows server
-(Cqshealth.dhcp.mc.vanderbilt.edu).</li>
-</ul>
-<ol start="3" style="list-style-type: decimal">
-<li>Open R Studio in the folder “modified_degauss”:</li>
-</ol>
-<ul>
-<li>Launch R Studio.</li>
-</ul>
-<p>Note: It may take 1–2 minutes to open, as the R Studio settings have
-been customized for this project.</p>
-<ol start="4" style="list-style-type: decimal">
-<li>Run R Script:</li>
-</ol>
-<ul>
-<li>Open the file <code>modified_degauss_run_child.R</code> or
-<code>modified_degauss_run_dyad.R</code>.</li>
-</ul>
-<p>If you’re using my program for the first time, please run the
-following command to replicate my environment:</p>
-<pre><code>install.packages(&#39;renv&#39;)                                                             
-library(renv)                                                                       
-renv::activate()                                                                    
-renv::restore() </code></pre>
-<ul>
-<li>Provide the following paths:</li>
-</ul>
-<p>The path to the input folder containing the address data and the file
-name</p>
-<p>The path to the output folder where you’d like to store the processed
-data after removing all PHI data</p>
-<p>The path to the temporary folder to store intermediate files
-containing PHI</p>
-<ul>
-<li>Execute the remaining script.</li>
-</ul>
-<ol start="5" style="list-style-type: decimal">
-<li>Navigate to the output Files:</li>
-</ol>
-<p>Processed data will be saved in any folder of your choice.</p>
-<p>This folder contains final CSV files not containing any PHI.</p>
-</div>
-<div id="tips-and-tricks" class="section level3">
-<h3>Tips and tricks</h3>
-<ul>
-<li><p>Avoid launching the same Podman container multiple times using
-multiple RStudio, as it may lead to unintentional errors.</p></li>
-<li><p>Parallel processes require CPU cores and memory. If your system
-doesn’t have enough resources, processes can fail. <span class="math inline">\(\rightarrow\)</span> Reduce the number of workers
-used by setting the multisession plan to use fewer workers</p></li>
-</ul>
-</div>
-<div id="detailed-description-of-what-modified-degauss-is-doing." class="section level3">
-<h3>Detailed description of what Modified DeGAUSS is doing.</h3>
-<ol style="list-style-type: decimal">
-<li><code>modified_degauss_run_child.R</code></li>
+<li><code>modified_degauss_run_xxx.R</code></li>
 </ol>
 <p>This is the main script (index file) that specifies the folder
 structure and file paths for input and output data. All subsequent
@@ -436,75 +344,11 @@ scripts are called or sourced from here.</p>
 <p>This script ensures that Podman is properly configured and running.
 It also loads all required R packages and custom functions used.</p>
 <ol start="3" style="list-style-type: decimal">
-<li><code>R/child_cohort_preparation_simple.R</code></li>
+<li><code>R/xxx_cohort_preparation_simple.R</code></li>
 </ol>
 <p>This script prepares the child cohort data before address
 standardization and geocoding.</p>
-<p>In the original dataset, BEG and END are given in year–month
-format:</p>
-<table>
-<thead>
-<tr class="header">
-<th>recip</th>
-<th>TN_DOB</th>
-<th>BEG</th>
-<th>END</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>2010-10-14</td>
-<td>2010-10</td>
-<td>2010-10</td>
-</tr>
-<tr class="even">
-<td>1</td>
-<td>2010-10-14</td>
-<td>2011-12</td>
-<td>2011-12</td>
-</tr>
-<tr class="odd">
-<td>2</td>
-<td>2022-01-06</td>
-<td>2022-01</td>
-<td>2022-04</td>
-</tr>
-</tbody>
-</table>
-<p>From here, Tan converts these to the first day of the month in
-SAS:</p>
-<table>
-<thead>
-<tr class="header">
-<th>recip</th>
-<th>TN_DOB</th>
-<th>BEG</th>
-<th>END</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>2010-10-14</td>
-<td>2010-10-01</td>
-<td>2010-10-01</td>
-</tr>
-<tr class="even">
-<td>1</td>
-<td>2010-10-14</td>
-<td>2011-12-01</td>
-<td>2011-12-01</td>
-</tr>
-<tr class="odd">
-<td>2</td>
-<td>2022-01-06</td>
-<td>2022-01-01</td>
-<td>2022-04-01</td>
-</tr>
-</tbody>
-</table>
-<p><code>R/child_cohort_preparation_simple.R</code> keeps only address
+<p><code>R/xxx_cohort_preparation_simple.R</code> keeps only address
 records overlapping with the exposure period, such as infancy (e.g.,
 from birth to 1 year).</p>
 <ol start="4" style="list-style-type: decimal">
@@ -517,84 +361,8 @@ trained on OpenStreetMap data.</p>
 <p>The environment for libpostal is created using Podman, based on <a href="https://degauss.org/postal/">ghcr.io/degauss-org/postal:0.1.4</a>.</p>
 <p>Each raw address should end with a 5-digit ZIP code, as the geocoding
 algorithm uses it as the initial search key.</p>
-<p>Example of the input file</p>
-<table>
-<colgroup>
-<col width="20%" />
-<col width="20%" />
-<col width="20%" />
-<col width="20%" />
-<col width="20%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>recip</th>
-<th>TN_DOB</th>
-<th>BEG</th>
-<th>END</th>
-<th>Address</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>1</td>
-<td>2010-10-14</td>
-<td>2010-10-01</td>
-<td>2010-10-01</td>
-<td>2600 Hillsboro Pike, Nashville, TN, 37212</td>
-</tr>
-</tbody>
-</table>
-<p>Normalized results (from <a href="https://github.com/openvenues/libpostal">the official website of
-libpostal</a> )</p>
-<table>
-<colgroup>
-<col width="45%" />
-<col width="54%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Input</th>
-<th>Output (may be multiple in libpostal)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>One-hundred twenty E 96th St</td>
-<td>120 east 96th street</td>
-</tr>
-<tr class="even">
-<td>C/ Ocho, P.I. 4</td>
-<td>calle 8 polígono industrial 4</td>
-</tr>
-<tr class="odd">
-<td>V XX Settembre, 20</td>
-<td>via 20 settembre 20</td>
-</tr>
-<tr class="even">
-<td>Quatre vingt douze R. de l’Église</td>
-<td>92 rue de l eglise</td>
-</tr>
-<tr class="odd">
-<td>ул Каретный Ряд, д 4, строение 7</td>
-<td>улица каретныи ряд дом 4 строение 7</td>
-</tr>
-<tr class="even">
-<td>ул Каретный Ряд, д 4, строение 7</td>
-<td>ulitsa karetnyy ryad dom 4 stroyeniye 7</td>
-</tr>
-<tr class="odd">
-<td>Marktstraße 14</td>
-<td>markt strasse 14</td>
-</tr>
-</tbody>
-</table>
-<p><strong>However, in TennCare data, this process sometimes dropped ZIP
-codes unintentionally.</strong> <strong>To avoid this issue, I
-ultimately chose to bypass that specific normalization
-step.</strong></p>
-<ol start="4" style="list-style-type: decimal">
-<li><code>R/geocoding.R</code></li>
+<ol start="5" style="list-style-type: decimal">
+<li><code>R/geocoding_xxx.R</code></li>
 </ol>
 <p>This is the most time-consuming part of the pipeline. It performs
 address geocoding using the Ruby gem <code>Geocoder-US-2.0.4</code>.</p>
@@ -606,7 +374,7 @@ from the U.S. Census Bureau.</p>
 <p><img role="img" src="overlap_period.png" /></p>
 <p>The script then adjusts address timelines to match each child’s
 exposure period. It creates a single continuous time span, with a total
-of 364, 365 or 366 days for each child.</p>
+of <strong>about 365 days</strong> for each child.</p>
 <ul>
 <li>Trimming timeline edges:</li>
 </ul>
@@ -621,7 +389,7 @@ beyond the first birthday.</p>
 the earlier record is set to one day before the next record starts.</p>
 <p>If an overlap exists, the end date of the earlier record is adjusted
 similarly.</p>
-<ol start="5" style="list-style-type: decimal">
+<ol start="6" style="list-style-type: decimal">
 <li><code>R/census.R</code></li>
 </ol>
 <p>This script appends census and redlining variables to each
@@ -632,7 +400,7 @@ files</a> (restricted to Tennessee)</p>
 <p>Adds Home Owners’ Loan Corporation (HOLC) redlining grades (A, B, C,
 D): <a href="https://dsl.richmond.edu/panorama/redlining/data">the
 University of Richmond</a></p>
-<ol start="6" style="list-style-type: decimal">
+<ol start="7" style="list-style-type: decimal">
 <li><code>R/road.R</code></li>
 </ol>
 <p>This script calculates the shortest distance to the nearest primary
@@ -642,7 +410,7 @@ data source is <a href="https://www.census.gov/geographies/mapping-files/time-se
 Census Bureau TIGER/Line Files</a>.</p>
 <p>I chose the 2011 data because it is the earliest year for which
 primary and secondary road shapefiles are available through R <a href="https://github.com/walkerke/tigris">tigris</a> package.</p>
-<ol start="7" style="list-style-type: decimal">
+<ol start="8" style="list-style-type: decimal">
 <li><code>R/green.R</code></li>
 </ol>
 <p>This script calculates the average Enhanced Vegetation Index (EVI)
@@ -654,7 +422,7 @@ Archive Center (LP DAAC). A cloud-free composite EVI raster at 250 × 250
 m resolution was created by assembling individual remote-sensing images
 collected between June 10 and June 25, 2018, by <a href="https://github.com/degauss-org/greenspace">Professor Cole
 Brokamp</a>.</p>
-<ol start="8" style="list-style-type: decimal">
+<ol start="9" style="list-style-type: decimal">
 <li><code>R/dep_index.R</code></li>
 </ol>
 <p>This script computes census tract-level material deprivation indices
@@ -678,11 +446,11 @@ range from 0 to 1, with a higher index being more deprived.</p></li>
 <p>For a more comprehensive set of indices, use
 <code>dep_index_britt.R</code>, which generates a separate dataset
 containing: ADI, SVI, COI, EJI, CRE, DCI, NDI, NSES, SDI, and EQI.</p>
-<ol start="9" style="list-style-type: decimal">
+<ol start="10" style="list-style-type: decimal">
 <li><code>R/aadt.R</code></li>
 </ol>
 <p>This script calculates Average annual daily traffic within a
-400-meter buffer radius of each residential address × road length for
+500-meter buffer radius of each residential address × road length for
 interstates, expressways, and freeways.</p>
 <p>Traffic and road data were obtained from the U.S. Department of
 Transportation, Federal Highway Administration, using <a href="https://www.fhwa.dot.gov/policyinformation/hpms.cfm">the Highway
@@ -698,7 +466,7 @@ year available for both vehicle and truck traffic volumes.</p>
 <li><p>Average daily trucks × length of moving roads</p></li>
 <li><p>Average daily trucks × length of stop-and-go roads</p></li>
 </ul>
-<ol start="10" style="list-style-type: decimal">
+<ol start="11" style="list-style-type: decimal">
 <li><code>R/road_and_aadt.R</code></li>
 </ol>
 <p>Because road proximity (from TIGER) and traffic density (from HPMS)
@@ -707,7 +475,7 @@ combined exposure metric. It calculates road proximity and Average
 Annual Daily Traffic (AADT) for interstates, expressways, and freeways
 using the HPMS dataset, allowing evaluation of the interaction between
 proximity to major roads and the traffic volume along those roads.</p>
-<ol start="11" style="list-style-type: decimal">
+<ol start="12" style="list-style-type: decimal">
 <li><code>R/road_density.R</code></li>
 </ol>
 <p>This script calculates the length (meters) of primary, secondary and
@@ -718,22 +486,22 @@ data source is <a href="https://www.census.gov/geographies/mapping-files/time-se
 Census Bureau TIGER/Line Files</a>.</p>
 <p>I chose the 2011 data because it is the earliest year for which
 primary and secondary road shapefiles are available through R <a href="https://github.com/walkerke/tigris">tigris</a> package.</p>
-<ol start="11" style="list-style-type: decimal">
-<li><code>R/no2_monthly.R</code></li>
+<ol start="13" style="list-style-type: decimal">
+<li><code>R/no2_monthly_xxx.R</code></li>
 </ol>
 <p>This script estimates average NO₂ exposure during the defined
 exposure period. NO₂ estimates provided by <a href="https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/LUFKYG&amp;faces-redirect=true">Professor
-Joel Schwartz</a> are available for 2010-01 through 2016-12.</p>
+Joel Schwartz</a> are available for 2000-01 through 2016-12.</p>
 <p>First, it identify the 1 km² grid cell in which each residential
 address is located. Then, it pulls monthly NO₂ values corresponding to
 the address’s grid cell during the exposure period. Finally, compute the
 mean NO₂ concentration across all months within the exposure window.</p>
 <ol start="12" style="list-style-type: decimal">
-<li><code>R/bc.R</code></li>
+<li><code>R/bc_monthly_xxx.R</code></li>
 </ol>
 <p>This script estimates average Black carbon (BC) exposure during the
 defined exposure period. BC estimates provided by <a href="https://sites.wustl.edu/acag/surface-pm2-5/#TOOLS">Professor Kai
-Zhang</a> are available for 2010-01 through 2017-12.</p>
+Zhang</a> are available for 2000-01 through 2017-12.</p>
 <p>First, it identify the 0.01° × 0.01° grid cell in which each
 residential address is located. Then, it pulls monthly BC values
 corresponding to the address’s grid cell during the exposure period.
@@ -745,7 +513,7 @@ exposure window.</p>
 <p>This script calculates the number of children per census block group
 (blocks with fewer than 11 children are masked as “&lt;11”).</p>
 <ol start="14" style="list-style-type: decimal">
-<li><code>R/final_clean_child.R</code></li>
+<li><code>R/final_clean_xxx.R</code></li>
 </ol>
 <p>The final data-cleaning step. It removes all PHI, and retains only
 necessary environmental and contextual variables.</p>
